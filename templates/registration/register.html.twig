@@ -1,0 +1,43 @@
+{% extends 'signInUp.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+            <h1 class="h4 mb-4 text-center">Create your account</h1>
+
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+
+            {{ form_start(registrationForm) }}
+
+                {{ form_row(registrationForm.email, {
+                    attr: { class: 'form-control' },
+                    label_attr: { class: 'form-label' }
+                }) }}
+
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password',
+                    attr: { class: 'form-control' },
+                    label_attr: { class: 'form-label' }
+                }) }}
+
+                {{ form_row(registrationForm.agreeTerms, {
+                    label_attr: { class: 'form-check-label' },
+                    row_attr: { class: 'form-check my-3' },
+                    attr: { class: 'form-check-input' }
+                }) }}
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+
+            {{ form_end(registrationForm) }}
+
+            <div class="text-center">
+                Already have an account?
+                <a href="{{ path('app_login') }}">Sign in</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
