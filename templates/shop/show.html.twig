@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Shop Details</h2>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <th scope="row">Id</th>
+                        <td>{{ shop.id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{{ shop.name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Owner Name</th>
+                        <td>{{ shop.ownername }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>{{ shop.email }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Phone</th>
+                        <td>{{ shop.phone }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Street address</th>
+                        <td>{{ shop.address }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">City</th>
+                        <td>{{ shop.city }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Zip</th>
+                        <td>{{ shop.zip }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Own Delivery System</th>
+                        <td>{{ shop.ownDeliverySystem ? 'Yes' : 'No' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{{ path('app_shop_index') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to list
+                </a>
+
+                <div class="d-flex align-items-center gap-2" style="width: max-content;">
+                    <a href="{{ path('app_product_index', {'shopId': shop.id}) }}" class="btn btn-primary">
+                        <i class="bi bi-pencil-square"></i> Watch products
+                    </a>
+
+                    <a href="{{ path('app_shop_edit', {'id': shop.id}) }}" class="btn btn-warning">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+
+                    {{ include('shop/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

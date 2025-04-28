@@ -22,11 +22,11 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?shop $shop = null;
+    private ?Shop $shop = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?payment $payment = null;
+    private ?Payment $payment = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;

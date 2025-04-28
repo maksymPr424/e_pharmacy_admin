@@ -4,39 +4,52 @@
 
 {% block body %}
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
-            <h1 class="h4 mb-4 text-center">Create your account</h1>
+        <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+            <h1 class="h4 mb-4 text-center">Register</h1>
 
-            {% for flash_error in app.flashes('verify_email_error') %}
-                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-            {% endfor %}
+            {% if form_errors(registrationForm) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
 
-            {{ form_start(registrationForm) }}
+            {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': ''}}) }}
+                <div class="mb-3">
+                    {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'autofocus': 'autofocus'}}) }}
+                    {{ form_errors(registrationForm.email, {'attr': {'class': 'text-danger'}}) }}
+                </div>
 
-                {{ form_row(registrationForm.email, {
-                    attr: { class: 'form-control' },
-                    label_attr: { class: 'form-label' }
-                }) }}
+                <div class="mb-3">
+                    {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'text-danger'}}) }}
+                </div>
 
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Password',
-                    attr: { class: 'form-control' },
-                    label_attr: { class: 'form-label' }
-                }) }}
+                <div class="mb-3">
+                    {{ form_label(registrationForm.username, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.username, {'attr': {'class': 'text-danger'}}) }}
+                </div>
 
-                {{ form_row(registrationForm.agreeTerms, {
-                    label_attr: { class: 'form-check-label' },
-                    row_attr: { class: 'form-check my-3' },
-                    attr: { class: 'form-check-input' }
-                }) }}
+                <div class="mb-3">
+                    {{ form_label(registrationForm.phone, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.phone, {'attr': {'class': 'text-danger'}}) }}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    {{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'text-danger'}}) }}
+                </div>
 
                 <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
-
             {{ form_end(registrationForm) }}
 
             <div class="text-center">
-                Already have an account?
-                <a href="{{ path('app_login') }}">Sign in</a>
+                Yau are already have an account?
+                <a href="{{ path('app_login') }}">Log in</a>
             </div>
         </div>
     </div>
