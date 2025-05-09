@@ -6,3 +6,5 @@ controllers:
 admin_routes:
     resource: 'routes/admin.yaml'
     type: yaml
+app_logout:
+    path: /logout

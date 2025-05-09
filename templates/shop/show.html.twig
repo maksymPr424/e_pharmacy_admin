@@ -13,10 +13,6 @@
             <table class="table table-bordered table-hover">
                 <tbody>
                     <tr>
-                        <th scope="row">Id</th>
-                        <td>{{ shop.id }}</td>
-                    </tr>
-                    <tr>
                         <th scope="row">Name</th>
                         <td>{{ shop.name }}</td>
                     </tr>
@@ -51,22 +47,13 @@
                 </tbody>
             </table>
 
-            <div class="d-flex justify-content-between mt-4">
-                <a href="{{ path('app_shop_index') }}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Back to list
-                </a>
+            <div class="d-flex justify-content-end gap-2 mt-4">
 
-                <div class="d-flex align-items-center gap-2" style="width: max-content;">
-                    <a href="{{ path('app_product_index', {'shopId': shop.id}) }}" class="btn btn-primary">
-                        <i class="bi bi-pencil-square"></i> Watch products
-                    </a>
-
-                    <a href="{{ path('app_shop_edit', {'id': shop.id}) }}" class="btn btn-warning">
+                    <a href="{{ path('app_shop_edit') }}" class="btn btn-warning">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
 
                     {{ include('shop/_delete_form.html.twig') }}
-                </div>
             </div>
         </div>
     </div>

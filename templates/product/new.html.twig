@@ -3,9 +3,15 @@
 {% block title %}New Product{% endblock %}
 
 {% block body %}
-    <h1>Create new Product</h1>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h2 class="mb-0">Create New Product</h2>
+        </div>
 
-    {{ include('product/_form.html.twig') }}
-
-    <a href="{{ path('app_product_index', {'shopId': shopId}) }}">back to list</a>
+        <div class="card-body">
+            {{ include('product/_form.html.twig') }}
+        </div>
+    </div>
+</div>
 {% endblock %}

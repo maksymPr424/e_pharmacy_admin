@@ -3,31 +3,32 @@
 namespace App\Repository;
 
 use App\Entity\Shop;
+use App\Entity\Supplier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Shop>
+ * @extends ServiceEntityRepository<Supplier>
  */
-class ShopRepository extends ServiceEntityRepository
+class SupplierRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Shop::class);
+        parent::__construct($registry, Supplier::class);
     }
 
-    // src/Repository/ShopRepository.php
-    public function findById($id, $lockMode = null, $lockVersion = null)
+    public function findByShop(Shop $shop): array
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.id = :id')
-            ->setParameter('id', $id)
+            ->andWhere('s.shop = :shop')
+            ->setParameter('shop', $shop)
+            ->orderBy('s.name', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     //    /**
-    //     * @return Shop[] Returns an array of Shop objects
+    //     * @return Supplier[] Returns an array of Supplier objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -41,7 +42,7 @@ class ShopRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Shop
+    //    public function findOneBySomeField($value): ?Supplier
     //    {
     //        return $this->createQueryBuilder('s')
     //            ->andWhere('s.exampleField = :val')

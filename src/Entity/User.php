@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -44,16 +42,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $phone = null;
 
-    /**
-     * @var Collection<int, Shop>
-     */
-    #[ORM\OneToMany(targetEntity: Shop::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $shops;
-
-    public function __construct()
-    {
-        $this->shops = new ArrayCollection();
-    }
+    #[ORM\OneToOne(mappedBy: 'user')]
+    private ?Shop $shop = null;
 
     public function getId(): ?int
     {
@@ -68,7 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -92,17 +81,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
-    
+
     /**
      * @param list<string> $roles
      */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -117,7 +104,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -138,7 +124,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
         return $this;
     }
 
@@ -150,7 +135,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -162,37 +146,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(string $phone): static
     {
         $this->phone = $phone;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Shop>
-     */
-    public function getShops(): Collection
+    public function getShop(): ?Shop
     {
-        return $this->shops;
+        return $this->shop;
     }
 
-    public function addShop(Shop $shop): static
+    public function setShop(?Shop $shop): static
     {
-        if (!$this->shops->contains($shop)) {
-            $this->shops->add($shop);
-            $shop->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeShop(Shop $shop): static
-    {
-        if ($this->shops->removeElement($shop)) {
-            // set the owning side to null (unless already changed)
-            if ($shop->getUser() === $this) {
-                $shop->setUser(null);
-            }
-        }
-
+        $this->shop = $shop;
         return $this;
     }
 }

@@ -15,10 +15,21 @@
     </head>
     <body>
         {% block navigation %}
-        <ul>
-            <li><a href="{{ path('app_shop_index') }}">Shop</a></li>
-        </ul>
 
+        <ul>
+            {% if app.user %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('app_shop_index') }}">Shop</a></li>
+                        <li><a href="{{ path('app_product_index') }}">Medicine</a></li>
+                        <li><a href="{{ path('app_statistics_index') }}">Statistics</a></li>
+                {% endif %}
+
+                <li><a class='sidebar_link' href="{{ path('app_logout') }}">Logout</a></li>
+
+            {% endif %}
+        </ul>
+        
         {% endblock %}
         {% block body %}
         {% endblock %}

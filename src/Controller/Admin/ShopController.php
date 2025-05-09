@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ShopController extends AbstractController
 {
     #[Route(name: 'app_shop_index', methods: ['GET'])]
-    public function index(ShopRepository $shopRepository): Response
+    public function index(): Response
     {
-        return $this->render('shop/index.html.twig', [
-            'shops' => $shopRepository->findAll(),
+        $shop = $this->getUser()->getShop();
+
+        if (!$shop) {
+            return $this->redirectToRoute('app_shop_new');
+        }
+
+        return $this->render('shop/show.html.twig', [
+            'shop' => $shop,
         ]);
     }
 
@@ -43,17 +49,10 @@ final class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_shop_show', methods: ['GET'])]
-    public function show(Shop $shop): Response
+    #[Route('/edit', name: 'app_shop_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('shop/show.html.twig', [
-            'shop' => $shop,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_shop_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Shop $shop, EntityManagerInterface $entityManager): Response
-    {
+        $shop = $this->getUser()->getShop();
         $form = $this->createForm(ShopType::class, $shop);
         $form->handleRequest($request);
 

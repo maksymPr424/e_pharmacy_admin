@@ -39,8 +39,8 @@ class Shop
     #[ORM\Column]
     private ?bool $ownDeliverySystem = null;
 
-    #[ORM\ManyToOne(inversedBy: 'shops')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(inversedBy: 'shop')]
+    #[ORM\JoinColumn(nullable: false, unique: true)]
     private ?User $user = null;
 
     /**
@@ -55,10 +55,17 @@ class Shop
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'shop', orphanRemoval: true)]
     private Collection $orders;
 
+    /**
+     * @var Collection<int, Supplier>
+     */
+    #[ORM\OneToMany(targetEntity: Supplier::class, mappedBy: 'shop')]
+    private Collection $suppliers;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->suppliers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,7 +81,6 @@ class Shop
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -86,7 +92,6 @@ class Shop
     public function setOwnername(string $ownername): static
     {
         $this->ownername = $ownername;
-
         return $this;
     }
 
@@ -98,7 +103,6 @@ class Shop
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -110,7 +114,6 @@ class Shop
     public function setPhone(string $phone): static
     {
         $this->phone = $phone;
-
         return $this;
     }
 
@@ -122,7 +125,6 @@ class Shop
     public function setAddress(string $address): static
     {
         $this->address = $address;
-
         return $this;
     }
 
@@ -134,7 +136,6 @@ class Shop
     public function setCity(string $city): static
     {
         $this->city = $city;
-
         return $this;
     }
 
@@ -146,7 +147,6 @@ class Shop
     public function setZip(int $zip): static
     {
         $this->zip = $zip;
-
         return $this;
     }
 
@@ -158,19 +158,17 @@ class Shop
     public function setOwnDeliverySystem(bool $ownDeliverySystem): static
     {
         $this->ownDeliverySystem = $ownDeliverySystem;
-
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -188,19 +186,16 @@ class Shop
             $this->products->add($product);
             $product->setShop($this);
         }
-
         return $this;
     }
 
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
             if ($product->getShop() === $this) {
                 $product->setShop(null);
             }
         }
-
         return $this;
     }
 
@@ -218,16 +213,43 @@ class Shop
             $this->orders->add($order);
             $order->setShop($this);
         }
-
         return $this;
     }
 
     public function removeOrder(Order $order): static
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
             if ($order->getShop() === $this) {
                 $order->setShop(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Supplier>
+     */
+    public function getSuppliers(): Collection
+    {
+        return $this->suppliers;
+    }
+
+    public function addSupplier(Supplier $supplier): static
+    {
+        if (!$this->suppliers->contains($supplier)) {
+            $this->suppliers->add($supplier);
+            $supplier->setShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupplier(Supplier $supplier): static
+    {
+        if ($this->suppliers->removeElement($supplier)) {
+            // set the owning side to null (unless already changed)
+            if ($supplier->getShop() === $this) {
+                $supplier->setShop(null);
             }
         }
 
